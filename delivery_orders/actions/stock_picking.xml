@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="allocate_stock" model="ir.actions.server">
+            <field name="name">Allocate Available Stock</field>
+            <field name="model_id" ref="stock.model_stock_picking"/>
+            <field name="binding_model_id" ref="stock.model_stock_picking"/>
+            <field name="state">code</field>
+            <field name="code"><![CDATA[
+records.allocate_stock()
+]]>
+            </field>
+        </record>
+    </data>
+</odoo>
