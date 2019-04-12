@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Estella - Success Pack - Checkbox on company",
+    'name': "Estella - Success Pack - Export on accounting",
 
     'summary': """
-        Checkbox field on res.partner and warning window on SO or DOs if field is True""",
+        Export of invoices, credit notes, vendor bills and refunds to cvs""",
 
     'description': """
-        Checkbox field on res.partner and warning window on SO or DOs if field is True
+        
     """,
 
     'author': "Odoo S.A.",
@@ -23,7 +23,6 @@
 
     # always loaded
     'data': [
-        'views/res_partner.xml',
-        'views/stock_picking.xml',
+        'views/account_invoice.xml',
     ],
 }
