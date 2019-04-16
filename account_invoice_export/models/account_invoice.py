@@ -26,7 +26,7 @@ class AccountInvoice(models.Model):
                 for line in self.invoice_line_ids:
                     if line.name == 'US Ground Carriage':
                         f.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \n" %(
-                            self.journal_id.name, self.x_studio_field_xuLH1, self.date_invoice, self.number, source,
+                            self.journal_id.name, self.x_studio_sage_ac_1, self.date_invoice, self.number, source,
                             line.account_id.code, line.price_subtotal, self.fiscal_position_id.name,
                             line.price_subtotal * line.invoice_line_tax_ids.amount / 100, self.currency_id.name))
                     else:
@@ -34,6 +34,6 @@ class AccountInvoice(models.Model):
                         tax += line.price_subtotal * line.invoice_line_tax_ids.amount / 100
                         account_id = line.account_id.code
                 f.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \n" % (
-                    self.journal_id.name, self.x_studio_field_xuLH1, self.date_invoice, self.number, source,
+                    self.journal_id.name, self.x_studio_sage_ac_1, self.date_invoice, self.number, source,
                     account_id, total_unpayed, self.fiscal_position_id.name, tax, self.currency_id.name))
 
