@@ -8,3 +8,8 @@ class StockPicking(models.Model):
     def allocate_stock(self):
         for rec in self:
             rec.action_assign()
+
+    def unreserve_stock(self):
+        for rec in self:
+            rec.do_unreserve()
+
