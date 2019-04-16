@@ -9,8 +9,8 @@ class AccountInvoice(models.Model):
     def print_csv(self):
 
         with open("odoo.sage.import %s.csv" %(datetime.datetime.now()), 'w') as f:
-            f.write("Type, SAGE A/C, Invoice Date, Number, Source Document, Account, TOTAL Untaxed Amount in"
-                    " Company Currency for this account, Fiscal Position, Tax, Currency\n")
+            f.write("ID, Type, Account, , SAGE A/C, Invoice Date, Number, Source Document, TOTAL Untaxed Amount in"
+                    " Company Currency for this account, Fiscal Position, Tax, Exchange Rate\n")
             for self in self:
 
                 source_doc = ""
@@ -21,19 +21,20 @@ class AccountInvoice(models.Model):
                 else:
                     source = ""
 
+                currency_rate = self.env['res.currency'].search([('name', '=', self.currency_id.name)])
                 total_unpayed = 0
                 tax = 0
                 for line in self.invoice_line_ids:
                     if line.name == 'US Ground Carriage':
-                        f.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \n" %(
-                            self.journal_id.name, self.x_studio_sage_ac_1, self.date_invoice, self.number, source,
-                            line.account_id.code, line.price_subtotal, self.fiscal_position_id.name,
-                            line.price_subtotal * line.invoice_line_tax_ids.amount / 100, self.currency_id.name))
+                        f.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \n" %(self.id,
+                            self.journal_id.name, line.account_id.code, '', self.x_studio_sage_ac_1, self.date_invoice, self.number, source,
+                         line.price_subtotal, self.fiscal_position_id.name,
+                            line.price_subtotal * line.invoice_line_tax_ids.amount / 100, currency_rate.rate))
                     else:
                         total_unpayed += line.price_subtotal
                         tax += line.price_subtotal * line.invoice_line_tax_ids.amount / 100
                         account_id = line.account_id.code
-                f.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \n" % (
-                    self.journal_id.name, self.x_studio_sage_ac_1, self.date_invoice, self.number, source,
-                    account_id, total_unpayed, self.fiscal_position_id.name, tax, self.currency_id.name))
+                f.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \n" % (self.id,
+                    self.journal_id.name, account_id, '', self.x_studio_sage_ac_1, self.date_invoice, self.number, source,
+                     total_unpayed, self.fiscal_position_id.name, tax, currency_rate.rate))
 
