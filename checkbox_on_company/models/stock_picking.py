@@ -17,9 +17,9 @@ class PaymentLimitWizard(models.TransientModel):
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
+
     @api.multi
     def button_validate_limit(self):
-        print('hello euloge')
 
         if self.partner_id.has_limit == True:
             context = {
@@ -34,3 +34,5 @@ class StockPicking(models.Model):
                 'context': context,
                 'target': 'new',
             }
+        else:
+            return self.button_validate()
