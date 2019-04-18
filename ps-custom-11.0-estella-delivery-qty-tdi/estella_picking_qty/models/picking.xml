@@ -1,0 +1,30 @@
+<odoo>
+	<data>
+		<record model="ir.model.fields" id="picking_editable_reserved_qty">
+            <field name="name">x_reserved_availability</field>
+            <field name="field_description">New Reserved Qty</field>
+            <field name="model_id" eval="ref('stock.model_stock_move')"/>
+            <field name="ttype">float</field>
+            <field name="state">manual</field>
+            <field name="copy">False</field>
+        </record>
+
+        <record model="ir.model.fields" id="picking_reset_reserved_qty">
+            <field name="name">x_reset_reserve</field>
+            <field name="field_description">Reset Reserved Qty</field>
+            <field name="model_id" eval="ref('stock.model_stock_move')"/>
+            <field name="ttype">boolean</field>
+            <field name="state">manual</field>
+            <field name="copy">False</field>
+        </record>
+
+        <record model="ir.model.fields" id="picking_backorder_unreserver">
+            <field name="name">x_unreserve_backorder</field>
+            <field name="field_description">Unreserve backorder</field>
+            <field name="model_id" eval="ref('stock.model_stock_picking')"/>
+            <field name="ttype">boolean</field>
+            <field name="state">manual</field>
+            <field name="copy">False</field>
+        </record>
+    </data>
+</odoo>

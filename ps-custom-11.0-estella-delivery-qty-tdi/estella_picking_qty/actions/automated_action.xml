@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="picking_check_reserved_quantity" model="base.automation">
+        <field name="name">Stock picking modify reserved qty</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="trigger">on_write</field>
+        <field name="active" eval="True"/>
+        <field name="state">code</field>
+        <field name="filter_domain">[('picking_type_id.code','!=','incoming')]</field>
+        <field name="code"><![CDATA[
+# This is not optimal but will only be used on one picking at a time. 
+# When automation was done at the move level there was 'record does not exist' trouble
+
+for rec in records:
+    for record in rec.move_lines:
+        initial_qty = record.product_uom_qty
+        if record.x_reserved_availability:
+            record.update({'product_uom_qty': record.x_reserved_availability})
+            if record.product_id.type == 'product' and record.availability < record.x_reserved_availability :
+                raise Warning('Cannot reserve %s of %s as there are only %s available' % (record.x_reserved_availability, record.product_id.name, record.availability))
+            record._action_assign()
+            if initial_qty > record.x_reserved_availability:
+                record.write({'product_uom_qty': initial_qty})
+            record.write({'x_reserved_availability': 0})
+        if record.x_reset_reserve:
+            record.write({'product_uom_qty': 0, 'x_reset_reserve': False})
+            record._action_assign()
+        ]]></field>
+    </record>
+
+    <record id="picking_init_unreserve_backorder" model="base.automation">
+        <field name="name">Stock picking init unreserve backorder</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="trigger">on_create</field>
+        <field name="active" eval="True"/>
+        <field name="state">code</field>
+        <field name="filter_domain">[('backorder_id','!=',False)]</field>
+        <field name="code"><![CDATA[
+record.write({'x_unreserve_backorder': True})
+        ]]></field>
+    </record>
+
+        <record id="picking_check_unreserve_backorder" model="base.automation">
+        <field name="name">Stock picking do unreserve backorder</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="trigger">on_write</field>
+        <field name="active" eval="True"/>
+        <field name="state">code</field>
+        <field name="filter_domain">[('backorder_id','!=',False)]</field>
+        <field name="code"><![CDATA[
+for rec in records:
+    if rec.move_line_ids and rec.x_unreserve_backorder:
+        rec.do_unreserve()
+        rec._compute_state()
+        rec.write({'x_unreserve_backorder': False})
+        ]]></field>
+    </record>
+</odoo>
