@@ -23,6 +23,7 @@
 
     # always loaded
     'data': [
-        'views/account_invoice.xml',
+        'views/wizard.xml',
+        'actions/server.xml',
     ],
 }
