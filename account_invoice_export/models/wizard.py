@@ -53,6 +53,7 @@ class Wizard(models.TransientModel):
                                                                             line.price_subtotal * line.invoice_line_tax_ids.amount / 100,
                                                                             2),
                                                                         str.format('{0:.6f}', currency_rates.rate, 6)))
+
                 else:
                     total_unpayed += line.price_subtotal
                     tax += line.price_subtotal * line.invoice_line_tax_ids.amount / 100
