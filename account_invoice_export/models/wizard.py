@@ -52,7 +52,8 @@ class Wizard(models.TransientModel):
                                                                         round(
                                                                             line.price_subtotal * line.invoice_line_tax_ids.amount / 100,
                                                                             2),
-                                                                        round(currency_rates.rate, 2)))
+                                                                        str.format('{0:.6f}', currency_rates.rate, 6)))
+
                 else:
                     total_unpayed += line.price_subtotal
                     tax += line.price_subtotal * line.invoice_line_tax_ids.amount / 100
@@ -64,7 +65,7 @@ class Wizard(models.TransientModel):
                                                                 invoice.number, source,
                                                                 round(total_unpayed, 2),
                                                                 invoice.fiscal_position_id.name, round(tax, 2),
-                                                                round(currency_rates.rate, 2)))
+                                                                str.format('{0:.6f}', currency_rates.rate, 6)))
 
         decoded = f.getvalue()
         f.close()
