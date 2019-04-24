@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Estella - Success Pack - Sal module reporting",
+    'name': "Estella - Success Pack - Sale module reporting",
 
     'summary': """
         New measures on Sale Order Line (4 computed field: Untaxed Amount Reserved, Untaxed Amount Undelivered,
