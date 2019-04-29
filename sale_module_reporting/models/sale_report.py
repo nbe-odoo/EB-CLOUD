@@ -12,13 +12,11 @@ class SaleReport(models.Model):
     commitment_date = fields.Date(string='Commitment Date', readonly=True)
 
     def _query(self, with_clause='', fields={}, groupby='', from_clause=''):
-        fields['untaxed_amount_reserved'] = ', l.untaxed_amount_reserved'
-        fields['untaxed_amount_undelivered'] = ', l.untaxed_amount_undelivered'
-        fields['quantity_reserved'] = ', l.quantity_reserved'
-        fields['quantity_undelivered'] = ', l.quantity_undelivered'
+        fields['untaxed_amount_reserved'] = ', sum(l.untaxed_amount_reserved) as untaxed_amount_reserved'
+        fields['untaxed_amount_undelivered'] = ', sum(l.untaxed_amount_undelivered) as untaxed_amount_undelivered'
+        fields['quantity_reserved'] = ', sum(l.quantity_reserved) as quantity_reserved'
+        fields['quantity_undelivered'] = ', sum(l.quantity_undelivered) as quantity_undelivered'
         fields['effective_date'] = ', s.effective_date'
         fields['commitment_date'] = ', s.commitment_date'
-
-        groupby += ', l.untaxed_amount_reserved, l.untaxed_amount_undelivered, l.quantity_reserved, l.quantity_undelivered, s.effective_date, s.commitment_date'
 
         return super(SaleReport, self)._query(with_clause, fields, groupby, from_clause)
