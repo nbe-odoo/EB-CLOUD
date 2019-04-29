@@ -9,34 +9,31 @@ class SaleOrderLine(models.Model):
     quantity_reserved = fields.Float(compute='_compute_qty_reserved', string='Quantity Reserved', store=True)
     quantity_undelivered = fields.Float(compute='_compute_qty_undelivered', string='Quantity Undelivered', store=True)
 
-    @api.depends('order_id.picking_ids.move_lines.reserved_availability')
+    @api.multi
+    @api.depends('move_ids', 'move_ids.state', 'price_unit')
     def _compute_untaxed_reserved(self):
-        for rec in self:
-            rec.untaxed_amount_reserved = 0
-            for pick in rec.order_id.picking_ids:
-                for move in pick.move_lines:
-                    rec.untaxed_amount_reserved += move.reserved_availability * rec.price_unit
+        for so_line in self:
+            if so_line.move_ids and so_line.move_ids[0].state not in ['cancel', 'done']:
+                so_line.untaxed_amount_reserved = so_line.move_ids[0].reserved_availability * so_line.price_unit
 
-    @api.depends('order_id.picking_ids.move_lines.product_uom_qty', 'order_id.picking_ids.move_lines.quantity_done')
+    @api.multi
+    @api.depends('move_ids', 'move_ids.state', 'price_unit')
     def _compute_untaxed_undelivered(self):
-        for rec in self:
-            rec.untaxed_amount_undelivered = 0
-            for pick in rec.order_id.picking_ids:
-                for move in pick.move_lines:
-                    rec.untaxed_amount_undelivered = (move.product_uom_qty - move.quantity_done) * rec.price_unit
+        for so_line in self:
+            if so_line.move_ids and so_line.move_ids[0].state not in ['cancel', 'done']:
+                so_line.untaxed_amount_undelivered = (so_line.move_ids[0].product_uom_qty - so_line.move_ids[0].quantity_done) * so_line.price_unit
 
-    @api.depends('order_id.picking_ids.move_lines.reserved_availability')
+    @api.multi
+    @api.depends('move_ids', 'move_ids.state')
     def _compute_qty_reserved(self):
-        for rec in self:
-            rec.quantity_reserved = 0
-            for pick in rec.order_id.picking_ids:
-                for move in pick.move_lines:
-                    rec.quantity_reserved += move.reserved_availability
+        for so_line in self:
+            if so_line.move_ids and so_line.move_ids[0].state not in ['cancel', 'done']:
+                so_line.quantity_reserved = so_line.move_ids[0].reserved_availability
 
-    @api.depends('order_id.picking_ids.move_lines.product_uom_qty', 'order_id.picking_ids.move_lines.quantity_done')
+
+    @api.multi
+    @api.depends('move_ids', 'move_ids.state')
     def _compute_qty_undelivered(self):
-        for rec in self:
-            rec.quantity_undelivered = 0
-            for pick in rec.order_id.picking_ids:
-                for move in pick.move_lines:
-                    rec.quantity_undelivered = move.product_uom_qty - move.quantity_done
+        for so_line in self:
+            if so_line.move_ids and so_line.move_ids[0].state not in ['cancel', 'done']:
+                so_line.quantity_undelivered = so_line.move_ids[0].product_uom_qty - so_line.move_ids[0].quantity_done
