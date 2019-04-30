@@ -1,0 +1,14 @@
+<odoo>
+    <record id="stock_picking_view_list_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.tree_inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='backorder_id']" position="after">
+                <field name='sum_initial_demand'/>
+                <field name='percentage_reserved' attrs="{'invisible': [
+                      ('state', 'not in', ['confirmed', 'assigned'])]}" widget="progressbar"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
