@@ -15,7 +15,7 @@
     'category': 'stock',
     'version': '0.1',
 
-    'depends': ['base', 'stock'],
+    'depends': ['base', 'stock', 'delivery'],
 
     'data': [
         'views/stock_picking.xml',
