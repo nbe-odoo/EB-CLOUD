@@ -15,6 +15,8 @@ class SaleOrderLine(models.Model):
         for so_line in self:
             if so_line.move_ids and so_line.move_ids[0].state not in ['cancel', 'done']:
                 so_line.untaxed_amount_reserved = so_line.move_ids[0].reserved_availability * so_line.price_unit
+            elif so_line.move_ids and so_line.move_ids[0].state in ['cancel', 'done']:
+                so_line.untaxed_amount_reserved = 0
 
     @api.multi
     @api.depends('move_ids', 'move_ids.state', 'price_unit')
@@ -22,6 +24,8 @@ class SaleOrderLine(models.Model):
         for so_line in self:
             if so_line.move_ids and so_line.move_ids[0].state not in ['cancel', 'done']:
                 so_line.untaxed_amount_undelivered = (so_line.move_ids[0].product_uom_qty - so_line.move_ids[0].quantity_done) * so_line.price_unit
+            elif so_line.move_ids and so_line.move_ids[0].state in ['cancel', 'done']:
+                so_line.untaxed_amount_undelivered = 0
 
     @api.multi
     @api.depends('move_ids', 'move_ids.state')
@@ -29,6 +33,8 @@ class SaleOrderLine(models.Model):
         for so_line in self:
             if so_line.move_ids and so_line.move_ids[0].state not in ['cancel', 'done']:
                 so_line.quantity_reserved = so_line.move_ids[0].reserved_availability
+            elif so_line.move_ids and so_line.move_ids[0].state in ['cancel', 'done']:
+                so_line.quantity_reserved = 0
 
 
     @api.multi
@@ -37,3 +43,5 @@ class SaleOrderLine(models.Model):
         for so_line in self:
             if so_line.move_ids and so_line.move_ids[0].state not in ['cancel', 'done']:
                 so_line.quantity_undelivered = so_line.move_ids[0].product_uom_qty - so_line.move_ids[0].quantity_done
+            elif so_line.move_ids and so_line.move_ids[0].state in ['cancel', 'done']:
+                so_line.quantity_undelivered = 0
