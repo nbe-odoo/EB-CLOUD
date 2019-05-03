@@ -5,9 +5,9 @@
         <field name="inherit_id" ref="stock.vpicktree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='backorder_id']" position="after">
-                <field name='sum_initial_demand'/>
-                <field name='percentage_reserved' attrs="{'invisible': [
-                      ('state', 'not in', ['confirmed', 'assigned'])]}" widget="progressbar"/>
+                <field name='sum_initial_demand' string='Demand'/>
+                <field name='percentage_reserved' string='%' attrs="{'invisible': [
+                      ('state', 'not in', ['confirmed', 'assigned'])]}"/>
             </xpath>
         </field>
     </record>

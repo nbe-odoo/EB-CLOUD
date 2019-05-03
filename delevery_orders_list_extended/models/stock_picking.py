@@ -6,7 +6,7 @@ class StockPicking(models.Model):
     _name = "stock.picking"
     _inherit = "stock.picking"
 
-    sum_initial_demand = fields.Float(compute='_compute_sum_initial_demand')
+    sum_initial_demand = fields.Integer(compute='_compute_sum_initial_demand')
     percentage_reserved = fields.Float(compute='_compute_sum_initial_demand')
 
     @api.depends('move_ids_without_package')
