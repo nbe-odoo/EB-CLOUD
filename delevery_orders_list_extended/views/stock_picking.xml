@@ -6,8 +6,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='backorder_id']" position="after">
                 <field name='sum_initial_demand' string='Demand'/>
-                <field name='percentage_reserved' string='%' attrs="{'invisible': [
-                      ('state', 'not in', ['confirmed', 'assigned'])]}"/>
+                <field name='percentage_reserved' string='%' attrs="{'invisible': [('state', 'not in', ['confirmed', 'assigned'])]}"/>
             </xpath>
         </field>
     </record>
