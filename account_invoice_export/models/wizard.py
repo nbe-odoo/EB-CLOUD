@@ -41,6 +41,14 @@ class Wizard(models.TransientModel):
                 new_date = datetime.datetime.strptime(str(invoice.date_invoice), "%Y-%m-%d").strftime("%d-%m-%Y")
             else:
                 new_date = ""
+
+            account_type = []
+            for line in invoice.invoice_line_ids:
+                account_type.append(line.account_id.code)
+
+            print(set(account_type))
+
+
             for line in invoice.invoice_line_ids:
                 if line.account_id.name == 'Distribution & Carriage':
                     f.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \n" % (invoice.id,
