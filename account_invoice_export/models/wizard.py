@@ -21,6 +21,7 @@ class Wizard(models.TransientModel):
                     source = ''.join(source_doc).replace(',', '')
             else:
                 source = ""
+
             if invoice.type == 'out_refund':
                 journal_type = 'Credit Notes'
             elif invoice.type == 'out_invoice':
@@ -35,8 +36,7 @@ class Wizard(models.TransientModel):
             currency_rates = invoice.env['res.currency.rate'].search(
                 ['&', ('currency_id.name', '=', invoice.currency_id.name), ('name', '<=', invoice.date_invoice)],
                 limit=1)
-            total_unpayed = 0
-            tax = 0
+
             if invoice.date_invoice:
                 new_date = datetime.datetime.strptime(str(invoice.date_invoice), "%Y-%m-%d").strftime("%d-%m-%Y")
             else:
@@ -46,34 +46,25 @@ class Wizard(models.TransientModel):
             for line in invoice.invoice_line_ids:
                 account_type.append(line.account_id.code)
 
-            print(set(account_type))
+            account_type_unique = set(account_type)
 
+            for account in account_type_unique:
+                total_unpaid = 0
+                tax = 0
 
-            for line in invoice.invoice_line_ids:
-                if line.account_id.name == 'Distribution & Carriage':
-                    f.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \n" % (invoice.id,
-                                                                        journal_type, line.account_id.code,
-                                                                        '', invoice.x_studio_field_xuLH1,
-                                                                        new_date, invoice.number, source,
-                                                                        round(line.price_subtotal, 2),
-                                                                        invoice.fiscal_position_id.name,
-                                                                        round(
-                                                                            line.price_subtotal * line.invoice_line_tax_ids.amount / 100,
-                                                                            2),
-                                                                        str.format('{0:.6f}', currency_rates.rate, 6)))
+                for line in invoice.invoice_line_ids:
 
-                else:
-                    total_unpayed += line.price_subtotal
-                    tax += line.price_subtotal * line.invoice_line_tax_ids.amount / 100
-                    account_id = line.account_id.code
+                    if line.account_id.code == account:
+                        total_unpaid += line.price_subtotal
+                        tax += line.price_subtotal * line.invoice_line_tax_ids.amount / 100
 
-            f.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \n" % (invoice.id,
-                                                                journal_type, account_id, '',
-                                                                invoice.x_studio_field_xuLH1, new_date,
-                                                                invoice.number, source,
-                                                                round(total_unpayed, 2),
-                                                                invoice.fiscal_position_id.name, round(tax, 2),
-                                                                str.format('{0:.6f}', currency_rates.rate, 6)))
+                f.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \n" % (invoice.id,
+                                                                    journal_type, account, '',
+                                                                    invoice.x_studio_field_xuLH1, new_date,
+                                                                    invoice.number, source,
+                                                                    round(total_unpaid, 2),
+                                                                    invoice.fiscal_position_id.name, round(tax, 2),
+                                                                    str.format('{0:.6f}', currency_rates.rate, 6)))
 
         decoded = f.getvalue()
         f.close()
