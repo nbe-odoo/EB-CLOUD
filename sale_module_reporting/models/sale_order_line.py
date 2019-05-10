@@ -13,35 +13,38 @@ class SaleOrderLine(models.Model):
     @api.depends('move_ids', 'move_ids.state', 'price_unit', 'move_ids.reserved_availability')
     def _compute_untaxed_reserved(self):
         for so_line in self:
-            if so_line.move_ids and so_line.move_ids[0].state not in ['cancel', 'done']:
-                so_line.untaxed_amount_reserved = so_line.move_ids[0].reserved_availability * so_line.price_unit
-            elif so_line.move_ids and so_line.move_ids[0].state in ['cancel', 'done']:
-                so_line.untaxed_amount_reserved = 0
+            for delivery in so_line.move_ids:
+                if so_line.move_ids and delivery.state not in ['cancel', 'done']:
+                    so_line.untaxed_amount_reserved = delivery.reserved_availability * so_line.price_unit
+                elif so_line.move_ids and delivery.state in ['cancel', 'done']:
+                    so_line.untaxed_amount_reserved = 0
 
     @api.multi
     @api.depends('move_ids', 'move_ids.state', 'price_unit', 'move_ids.product_uom_qty', 'move_ids.quantity_done')
     def _compute_untaxed_undelivered(self):
         for so_line in self:
-            if so_line.move_ids and so_line.move_ids[0].state not in ['cancel', 'done']:
-                so_line.untaxed_amount_undelivered = (so_line.move_ids[0].product_uom_qty - so_line.move_ids[0].quantity_done) * so_line.price_unit
-            elif so_line.move_ids and so_line.move_ids[0].state in ['cancel', 'done']:
-                so_line.untaxed_amount_undelivered = 0
+            for delivery in so_line.move_ids:
+                if so_line.move_ids and delivery.state not in ['cancel', 'done']:
+                    so_line.untaxed_amount_undelivered = (delivery.product_uom_qty - delivery.quantity_done) * so_line.price_unit
+                elif so_line.move_ids and delivery.state in ['cancel', 'done']:
+                    so_line.untaxed_amount_undelivered = 0
 
     @api.multi
     @api.depends('move_ids', 'move_ids.state', 'move_ids.reserved_availability')
     def _compute_qty_reserved(self):
         for so_line in self:
-            if so_line.move_ids and so_line.move_ids[0].state not in ['cancel', 'done']:
-                so_line.quantity_reserved = so_line.move_ids[0].reserved_availability
-            elif so_line.move_ids and so_line.move_ids[0].state in ['cancel', 'done']:
-                so_line.quantity_reserved = 0
-
+            for delivery in so_line.move_ids:
+                if so_line.move_ids and delivery.state not in ['cancel', 'done']:
+                    so_line.quantity_reserved = delivery.reserved_availability
+                elif so_line.move_ids and delivery.state in ['cancel', 'done']:
+                    so_line.quantity_reserved = 0
 
     @api.multi
     @api.depends('move_ids', 'move_ids.state', 'move_ids.product_uom_qty', 'move_ids.quantity_done')
     def _compute_qty_undelivered(self):
         for so_line in self:
-            if so_line.move_ids and so_line.move_ids[0].state not in ['cancel', 'done']:
-                so_line.quantity_undelivered = so_line.move_ids[0].product_uom_qty - so_line.move_ids[0].quantity_done
-            elif so_line.move_ids and so_line.move_ids[0].state in ['cancel', 'done']:
-                so_line.quantity_undelivered = 0
+            for delivery in so_line.move_ids:
+                if so_line.move_ids and delivery.state not in ['cancel', 'done']:
+                    so_line.quantity_undelivered = delivery.product_uom_qty - delivery.quantity_done
+                elif so_line.move_ids and delivery.state in ['cancel', 'done']:
+                    so_line.quantity_undelivered = 0
