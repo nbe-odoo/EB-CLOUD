@@ -5,9 +5,9 @@ class SaleReport(models.Model):
     _inherit = 'sale.report'
 
     untaxed_amount_reserved11 = fields.Float(string='Untaxed Amount Reserved', readonly=True)
-    untaxed_amount_undelivered11 = fields.Float(string='Untaxed Amount Undelivered', readonly=True)
+    untaxed_amount_undelivered11 = fields.Float(string='Untaxed Amount Left to Delivered', readonly=True)
     quantity_reserved11 = fields.Float(string='Quantity Reserved', readonly=True)
-    quantity_undelivered11 = fields.Float(string='Quantity Undelivered', readonly=True)
+    quantity_undelivered11 = fields.Float(string='Qty Left to Delivered', readonly=True)
     effective_date = fields.Date(string='Effective Date', readonly=True)
     commitment_date = fields.Date(string='Commitment Date', readonly=True)
 
