@@ -12,7 +12,7 @@ class Wizard(models.TransientModel):
         invoices = self.env['account.invoice'].browse(self.env.context.get('active_ids'))
         f = StringIO()
         f.write(
-            "ID, Type, Account Reference, Nominal A/C Ref, , Date, Reference, Details, Net Amount, Tax Code, Tax Amount, Exchange Rate\n")
+            "ID, Type, Nominal A/C Ref, , Account Reference, Date, Reference, Details, Net Amount, Tax Code, Tax Amount, Exchange Rate\n")
         for invoice in invoices:
             source_doc = ""
             if invoice.origin:
