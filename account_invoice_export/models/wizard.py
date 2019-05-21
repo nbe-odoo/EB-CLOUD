@@ -12,7 +12,7 @@ class Wizard(models.TransientModel):
         invoices = self.env['account.invoice'].browse(self.env.context.get('active_ids'))
         f = StringIO()
         f.write(
-            "ID, Type, Nominal A/C Ref, , Account Reference, Date, Reference, Details, Net Amount, Tax Code, Tax Amount, Exchange Rate\n")
+            "ID, Type, Account Reference, Nominal A/C Ref, , Date, Reference, Details, Net Amount, Tax Code, Tax Amount, Exchange Rate\n")
         for invoice in invoices:
             source_doc = ""
             if invoice.origin:
@@ -59,8 +59,8 @@ class Wizard(models.TransientModel):
                         tax += line.price_subtotal * line.invoice_line_tax_ids.amount / 100
 
                 f.write("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \n" % (invoice.id,
-                                                                    journal_type, account, '',
-                                                                    invoice.x_studio_field_xuLH1, new_date,
+                                                                    journal_type, invoice.x_studio_field_xuLH1,
+                                                                    account, '', new_date,
                                                                     invoice.number, source,
                                                                     round(total_unpaid, 2),
                                                                     invoice.fiscal_position_id.name, round(tax, 2),
