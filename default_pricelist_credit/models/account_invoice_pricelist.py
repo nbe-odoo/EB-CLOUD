@@ -11,10 +11,12 @@ class AccountInvoice(models.Model):
 
     @api.onchange('partner_id')
     def _onchange_partner_id(self):
-        super(AccountInvoice, self)._onchange_partner_id()
+        res = super(AccountInvoice, self)._onchange_partner_id()
         
         self.pricelist_id = self.partner_id.property_product_pricelist.id
         self.currency_id = self.partner_id.property_product_pricelist.currency_id
+        
+        return res
 
 
 class AccountInvoiceLIne(models.Model):
