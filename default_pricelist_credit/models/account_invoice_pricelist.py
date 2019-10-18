@@ -25,6 +25,6 @@ class AccountInvoiceLIne(models.Model):
     @api.onchange('uom_id')
     def _onchange_uom_id(self):
         res = super(AccountInvoiceLIne, self)._onchange_uom_id()
-        if self.product_id:
+        if self.product_id and self.invoice_id.pricelist_id:
             self.price_unit = self.invoice_id.pricelist_id.get_product_price(self.product_id, 1.0, self.invoice_id.partner_id)
         return res
