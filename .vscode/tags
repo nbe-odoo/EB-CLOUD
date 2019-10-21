@@ -1,0 +1,19 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+AccountInvoice	../default_pricelist_credit/models/account_invoice_pricelist.py	/^class AccountInvoice(models.Model):$/;"	kind:class	line:6
+__init__.py	../default_pricelist_credit/__init__.py	1;"	kind:file	line:1
+__init__.py	../default_pricelist_credit/models/__init__.py	1;"	kind:file	line:1
+__manifest__.py	../default_pricelist_credit/__manifest__.py	1;"	kind:file	line:1
+_inherit	../default_pricelist_credit/models/account_invoice_pricelist.py	/^    _inherit = 'account.invoice'$/;"	kind:variable	line:7
+_onchange_partner_id	../default_pricelist_credit/models/account_invoice_pricelist.py	/^    def _onchange_partner_id(self):$/;"	kind:member	line:13
+account_invoice_pricelist	../default_pricelist_credit/models/__init__.py	/^from . import account_invoice_pricelist$/;"	kind:namespace	line:3
+account_invoice_pricelist.py	../default_pricelist_credit/models/account_invoice_pricelist.py	1;"	kind:file	line:1
+api	../default_pricelist_credit/models/account_invoice_pricelist.py	/^from odoo import models, fields, api$/;"	kind:namespace	line:3
+fields	../default_pricelist_credit/models/account_invoice_pricelist.py	/^from odoo import models, fields, api$/;"	kind:namespace	line:3
+models	../default_pricelist_credit/__init__.py	/^from . import models$/;"	kind:namespace	line:3
+models	../default_pricelist_credit/models/account_invoice_pricelist.py	/^from odoo import models, fields, api$/;"	kind:namespace	line:3
+pricelist_id	../default_pricelist_credit/models/account_invoice_pricelist.py	/^    pricelist_id = fields.Many2one($/;"	kind:variable	line:9
