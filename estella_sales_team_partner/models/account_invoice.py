@@ -9,3 +9,5 @@ class AccountInvoice(models.Model):
     def _onchange_partner_id(self):
         if self.partner_id.team_id:
             self.team_id = self.partner_id.team_id
+        if self.partner_id.user_id:
+            self.user_id = self.partner_id.user_id
