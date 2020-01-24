@@ -21,7 +21,6 @@
     # always loaded
     'data': [
         'views/res_partner.xml',
-        'views/account_invoice.xml'
     ],
 
 }
