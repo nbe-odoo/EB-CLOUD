@@ -7,6 +7,5 @@ class AccountInvoice(models.Model):
 
     @api.onchange('partner_id', 'company_id')
     def _onchange_partner_id(self):
-        import ipdb; ipdb.set_trace()
         if self.partner_id.team_id:
             self.team_id = self.partner_id.team_id
